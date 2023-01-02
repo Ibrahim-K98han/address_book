@@ -60,12 +60,23 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
             ),
           ),
           ListTile(
-            title: Text(
-              contact.email ?? 'Unavailable'
-            ),
+            title: Text(contact.email ?? 'Unavailable'),
             trailing: IconButton(
               icon: Icon(contact.email == null ? Icons.edit : Icons.email),
               onPressed: _mailContact,
+            ),
+          ),
+          ListTile(
+            title: Text(
+                contact.streetAddress == null || contact.streetAddress!.isEmpty
+                    ? 'Unavailabel'
+                    : contact.streetAddress!),
+            trailing: IconButton(
+              icon: Icon(contact.streetAddress == null ||
+                      contact.streetAddress!.isEmpty
+                  ? Icons.edit
+                  : Icons.my_location),
+              onPressed: _showMap,
             ),
           )
         ],
@@ -73,25 +84,39 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
     );
   }
 
-  void _callPerson() async{
+  void _callPerson() async {
     final uri = Uri.parse('tel:${contact.mobile}');
-    if(await canLaunchUrl(uri)){
+    if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
-    }else{
+    } else {
       throw 'Cannot launch url';
     }
   }
 
-  void _smsContact() async{
+  void _smsContact() async {
     final uri = Uri.parse('sms:${contact.mobile}');
-    if(await canLaunchUrl(uri)){
-    await launchUrl(uri);
-    }else{
-    throw 'Cannot launch url';
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Cannot launch url';
     }
   }
 
-  void _mailContact() {
+  void _mailContact() {}
 
+  void _showMap() async{
+    String urlString;
+    if(Platform.isAndroid){
+      urlString = 'geo:0,0?q=${contact.streetAddress}';
+    }else if(Platform.isIOS){
+      urlString = 'http/maps,apple.com/?q=${contact.streetAddress}';
+    }else{
+      urlString = 'geo:0,0?q=${contact.streetAddress}';
+    }
+    if (await canLaunchUrl(Uri.parse(urlString))) {
+    await launchUrl(Uri.parse(urlString));
+    } else {
+    throw 'Cannot launch url';
+    }
   }
 }
