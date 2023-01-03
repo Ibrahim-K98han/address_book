@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:address_book/models/contact_model.dart';
+import 'package:address_book/provider/contact_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class NewContactPage extends StatefulWidget {
   static const String routeName = '/new_contact';
@@ -66,8 +68,8 @@ class _NewContactPageState extends State<NewContactPage> {
                 ),
                 filled: true,
                 labelText: 'Full Name'
-              //hintText: 'Full Name'
-            ),
+                //hintText: 'Full Name'
+                ),
           ),
           SizedBox(
             height: 10,
@@ -82,8 +84,8 @@ class _NewContactPageState extends State<NewContactPage> {
                 ),
                 filled: true,
                 labelText: 'Mobile'
-              //hintText: 'Full Name'
-            ),
+                //hintText: 'Full Name'
+                ),
           ),
           SizedBox(
             height: 10,
@@ -98,8 +100,8 @@ class _NewContactPageState extends State<NewContactPage> {
                 ),
                 filled: true,
                 labelText: 'Email'
-              //hintText: 'Full Name'
-            ),
+                //hintText: 'Full Name'
+                ),
           ),
           SizedBox(
             height: 10,
@@ -113,8 +115,8 @@ class _NewContactPageState extends State<NewContactPage> {
                 ),
                 filled: true,
                 labelText: 'Address'
-              //hintText: 'Full Name'
-            ),
+                //hintText: 'Full Name'
+                ),
           ),
           SizedBox(
             height: 10,
@@ -128,8 +130,8 @@ class _NewContactPageState extends State<NewContactPage> {
                 ),
                 filled: true,
                 labelText: 'Website'
-              //hintText: 'Full Name'
-            ),
+                //hintText: 'Full Name'
+                ),
           ),
           SizedBox(
             height: 20,
@@ -152,8 +154,7 @@ class _NewContactPageState extends State<NewContactPage> {
                             setState(() {
                               genderGroupValue = value!;
                             });
-                          }
-                      ),
+                          }),
                       Text('Male'),
                       Radio(
                           value: 'Female',
@@ -162,8 +163,7 @@ class _NewContactPageState extends State<NewContactPage> {
                             setState(() {
                               genderGroupValue = value!;
                             });
-                          }
-                      ),
+                          }),
                       Text('Female'),
                     ],
                   )
@@ -195,17 +195,17 @@ class _NewContactPageState extends State<NewContactPage> {
                 elevation: 5,
                 child: imagePath == null
                     ? Image.asset(
-                  'images/placeholder.jpg',
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                )
+                        'images/placeholder.jpg',
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      )
                     : Image.file(
-                  File(imagePath!),
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
+                        File(imagePath!),
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
               ),
               SizedBox(
                 height: 10,
@@ -268,9 +268,8 @@ class _NewContactPageState extends State<NewContactPage> {
         website: websiteController.text,
         dob: dob,
         image: imagePath,
-        gender: genderGroupValue
-      );
-    contactList.add(contact);
+        gender: genderGroupValue);
+    Provider.of<ContactProvider>(context, listen: false).addContact(contact);
     Navigator.pop(context);
   }
 }

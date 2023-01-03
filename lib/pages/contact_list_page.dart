@@ -1,6 +1,8 @@
 import 'package:address_book/models/contact_model.dart';
 import 'package:address_book/pages/new_contact_page.dart';
+import 'package:address_book/provider/contact_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'contact_details_page.dart';
 
@@ -20,28 +22,30 @@ class _ContactListPageState extends State<ContactListPage> {
       appBar: AppBar(
         title: Text('Contact List'),
       ),
-      body: ListView.builder(
-        itemCount: contactList.length,
-        itemBuilder: (context, index) {
-          final contact = contactList[index];
-          return Card(
-            child: ListTile(
-              onTap: () =>
-                  Navigator.pushNamed(
-                      context, ContactDetailsPage.routeName,
-                      arguments: contact)
-                      .then((_) {
-                    setState(() {
+      body: Consumer<ContactProvider>(
+        builder: (context, provider, _)=>ListView.builder(
+          itemCount: provider.contactList.length,
+          itemBuilder: (context, index) {
+            final contact = provider.contactList[index];
+            return Card(
+              child: ListTile(
+                onTap: () =>
+                    Navigator.pushNamed(
+                        context, ContactDetailsPage.routeName,
+                        arguments: contact)
+                        .then((_) {
+                      setState(() {
 
-                    });
-                  }),
-              leading: CircleAvatar(
-                child: Text(contact.name.substring(0, 2)),
+                      });
+                    }),
+                leading: CircleAvatar(
+                  child: Text(contact.name.substring(0, 2)),
+                ),
+                title: Text(contact.name),
               ),
-              title: Text(contact.name),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () =>

@@ -1,10 +1,17 @@
+import 'dart:js';
+
 import 'package:address_book/pages/contact_details_page.dart';
 import 'package:address_book/pages/contact_list_page.dart';
 import 'package:address_book/pages/new_contact_page.dart';
+import 'package:address_book/provider/contact_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context)=>ContactProvider() .. getAllContact(),
+      child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
